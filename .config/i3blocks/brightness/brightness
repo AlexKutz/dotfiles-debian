@@ -1,0 +1,6 @@
+#!/bin/bash
+dir=$(ls /sys/class/backlight | head -n 1)
+b=$(cat /sys/class/backlight/$dir/brightness)
+m=$(cat /sys/class/backlight/$dir/max_brightness)
+echo "$(( 100 * b / m ))%"
+

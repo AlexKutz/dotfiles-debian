@@ -1,0 +1,111 @@
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+# Change $SCRIPT_DIR to the location of your scripts!
+
+command=$HOME/.config/i3blocks/$BLOCK_NAME/$BLOCK_NAME
+separator_block_width=25
+markup=none
+
+# Network interface monitoring
+#
+# If the instance is not specified, use the interface used for default route.
+# The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
+
+#[wlan-dbm]
+#command=IFACE=wlp1s0 $SCRIPT_DIR/wlan-dbm
+#USE_PERCENT=0
+
+#[wifi]
+#command=$SCRIPT_DIR/wifi
+#label=wifi:
+#INTERFACE=wlp1s0
+#interval=60
+
+[speedtest]
+command=$HOME/.config/i3blocks/speedtest/speedtest
+interval=300
+
+# Fetch the public IP address only on startup
+#[public-ip]
+#command=wget -qO - icanhazip.com
+#interval=once
+#color=#00FF00
+
+#Show ip in local network
+#[iface]
+#color=#00FF00
+#interval=30
+
+#Memory usage
+#The type defaults to "mem" if the instance is not specified.
+[memory]
+label=
+separator=true
+interval=10
+command=PERCENT=false $HOME/.config/i3blocks/memory/memory
+
+# Swap usage
+#[memory]
+#label=SWAP
+#instance=swap
+#separator=true
+#interval=30
+
+
+# Volume indicator
+#
+# The first parameter sets the step (and units to display)
+# The second parameter overrides the mixer selection
+# See the script for details.
+
+#[volume-pipewire]
+#interval=once
+#signal=1
+#USE_ALSA_NAME=1
+#LONG_FORMAT="${SYMB}${VOL}%"
+
+[brightness]
+label= 
+interval=once
+signal=16
+
+
+# Battery indicator
+# The battery instance defaults to 0.
+[battery]
+markup=pango
+interval=30
+
+# Keyboard Layout
+[keymap]
+command=bash -c 'xkb-switch;xkb-switch -W'
+interval=persist
+
+# Timedate
+[time]
+command=date '+%H:%M '
+interval=30
