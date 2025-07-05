@@ -16,7 +16,7 @@
 
 #------------------------------------------------------------------------
 if [[ -z "$INTERFACE" ]] ; then
-    INTERFACE="${BLOCK_INSTANCE:-wlp1s0}"
+	INTERFACE="${BLOCK_INSTANCE:-wlan0}"
 fi
 #------------------------------------------------------------------------
 
@@ -32,28 +32,53 @@ COLOR_DOWN=${COLOR_DOWN:-#FF0000}
 
 # If the wifi interface exists but no connection is active, "down" shall be displayed.
 if [[ "$(cat /sys/class/net/$INTERFACE/operstate)" = 'down' ]]; then
-    echo "down"
-    echo "down"
-    echo $COLOR_DOWN
-    exit
+	echo 
+	echo 
+	echo $COLOR_DOWN
+	exit
 fi
 
 #------------------------------------------------------------------------
 
-QUALITY=$(iw dev ${INTERFACE} link | grep 'dBm$' | grep -Eoe '-[0-9]{2}' | awk '{print  ($1 > -50 ? 100 :($1 < -100 ? 0 : ($1+100)*2))}')
+output=$(/usr/sbin/iw dev ${INTERFACE} link)
+
+QUALITY=$(echo "$output" | grep 'dBm$' | grep -Eoe '-[0-9]{2}' | awk '{print  ($1 > -50 ? 100 :($1 < -100 ? 0 : ($1+100)*2))}')
+
+SSID=$(echo "$output" | awk -F ': ' '/SSID/ {print $2}')
+
+#QUALITY=$(iwctl station ${INTERFACE} show | grep '^ *RSSI ' | sed -n 's/.*\(-[0-9][0-9]*\).*/\1/p' | awk '{print ($1 > -50 ? 100 : ($1 < -100 ? 0 : ($1 + 100) * 2))}')
 
 #------------------------------------------------------------------------
-
-echo $QUALITY% # full text
-echo $QUALITY% # short text
 
 # color
 if [[ $QUALITY -ge 80 ]]; then
-    echo $COLOR_GE80
+	echo "" [$SSID]
+	echo ""
+	echo $COLOR_GE80
 elif [[ $QUALITY -ge 60 ]]; then
-    echo $COLOR_GE60
+	echo "" [$SSID]
+	echo ""
+	echo $COLOR_GE60
 elif [[ $QUALITY -ge 40 ]]; then
-    echo $COLOR_GE40
+	echo "" [$SSID]
+	echo ""
+	echo $COLOR_GE40
 else
-    echo $COLOR_LOWR
+	echo "" [$SSID]
+	echo ""
+	echo $COLOR_LOWR
 fi
+
+# echo $QUALITY% # full text
+# echo $QUALITY% # short text
+
+# color
+# if [[ $QUALITY -ge 80 ]]; then
+    # echo $COLOR_GE80
+# elif [[ $QUALITY -ge 60 ]]; then
+    # echo $COLOR_GE60
+# elif [[ $QUALITY -ge 40 ]]; then
+    # echo $COLOR_GE40
+# else
+    # echo $COLOR_LOWR
+# fi

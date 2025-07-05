@@ -36,25 +36,24 @@ markup=none
 # The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
 
 #[wlan-dbm]
-#command=IFACE=wlp1s0 $SCRIPT_DIR/wlan-dbm
+#command=$HOME/.config/i3blocks/wlan-dbm/wlan-dbm
+#IFACE=wlan0
 #USE_PERCENT=0
-
-#[wifi]
-#command=$SCRIPT_DIR/wifi
-#label=wifi:
-#INTERFACE=wlp1s0
-#interval=60
 
 [speedtest]
 command=$HOME/.config/i3blocks/speedtest/speedtest
 interval=300
 
-# Fetch the public IP address only on startup
-#[public-ip]
-#command=wget -qO - icanhazip.com
-#interval=once
-#color=#00FF00
+[public-ip]
+command=wget -qO - icanhazip.com
+interval=once
+color=#00FF00
 
+[wifi]
+INTERFACE=wlan0
+interval=30
+
+# Fetch the public IP address only on startup
 #Show ip in local network
 #[iface]
 #color=#00FF00
@@ -63,7 +62,7 @@ interval=300
 #Memory usage
 #The type defaults to "mem" if the instance is not specified.
 [memory]
-label=
+label= 
 separator=true
 interval=10
 command=PERCENT=false $HOME/.config/i3blocks/memory/memory
@@ -86,6 +85,7 @@ command=PERCENT=false $HOME/.config/i3blocks/memory/memory
 interval=once
 signal=1
 LONG_FORMAT="${SYMB}${VOL}%"
+#LONG_FORMAT="${SYMB}${VOL}% [${NAME}]"
 #USE_ALSA_NAME=1
 
 [brightness]
