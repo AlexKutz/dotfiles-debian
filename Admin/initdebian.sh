@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOGFILE="$HOME/debian-init.log"
 
 # Выводит лог в консоль и файл
@@ -46,11 +47,18 @@ main() {
     install_package xserver-xorg
     install_package xinit
     install_package i3
-    install_package i3blocks
     install_package kitty
     install_package xclip
     install_package fonts-jetbrains-mono
-    install_package build-essential
+    install_package $SCRIPT_DIR/backlight-control_20250705-1_amd64.deb
+
+    # Build tools
+    # install_package build-essential
+    # install_package autoconf
+    # install_package automake
+    # install_package libtool
+
+    install_package $SCRIPT_DIR/i3blocks_1.5-1_amd64.deb
 
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     AUTOLOGIN_SCRIPT="$SCRIPT_DIR/setup-autologin.sh"
@@ -76,16 +84,16 @@ main() {
         git clone https://github.com/Hendrikto/backlight_control.git >>"$LOGFILE" 2>&1
     fi
 
-    cd backlight_control
-    log_message "Building and installing backlight_control..."
-    if sudo make install >>"$LOGFILE" 2>&1; then
-        log_message "backlight_control installed."
-    else
-        error_message "Failed to build/install backlight_control."
-        exit 1
-    fi
-    cd "$HOME"
-    rm -rf backlight_control
+    # cd backlight_control
+    # log_message "Building and installing backlight_control..."
+    # if sudo make install >>"$LOGFILE" 2>&1; then
+        # log_message "backlight_control installed."
+    # else
+        # error_message "Failed to build/install backlight_control."
+        # exit 1
+    # fi
+    # cd "$HOME"
+    # rm -rf backlight_control
 
     log_message "==== Setup Complete at $(date) ===="
 }

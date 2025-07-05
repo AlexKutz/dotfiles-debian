@@ -241,3 +241,5 @@ bindsym XF86MonBrightnessDown exec backlight_control -20 && pkill -RTMIN+16 i3bl
 
 # Увеличение яркости
 bindsym XF86MonBrightnessUp exec backlight_control +20 && pkill -RTMIN+16 i3blocks
+
+bindsym $mod+Shift+w exec pcmanfm

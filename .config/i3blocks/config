@@ -82,11 +82,11 @@ command=PERCENT=false $HOME/.config/i3blocks/memory/memory
 # The second parameter overrides the mixer selection
 # See the script for details.
 
-#[volume-pipewire]
-#interval=once
-#signal=1
+[volume-pipewire]
+interval=once
+signal=1
+LONG_FORMAT="${SYMB}${VOL}%"
 #USE_ALSA_NAME=1
-#LONG_FORMAT="${SYMB}${VOL}%"
 
 [brightness]
 label= 
