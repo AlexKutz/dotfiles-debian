@@ -51,6 +51,7 @@ main() {
     install_package xclip
     install_package fonts-jetbrains-mono
     install_package acpi # for i3blocks battery widget
+    install_package ranger
     install_package $SCRIPT_DIR/backlight-control_20250705-1_amd64.deb
 
     # Build tools
