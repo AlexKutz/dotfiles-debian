@@ -80,10 +80,10 @@ main() {
 
 
     cd "$HOME"
-    if [ ! -d backlight_control ]; then
-        log_message "Cloning backlight_control..."
-        git clone https://github.com/Hendrikto/backlight_control.git >>"$LOGFILE" 2>&1
-    fi
+    # if [ ! -d backlight_control ]; then
+        # log_message "Cloning backlight_control..."
+        # git clone https://github.com/Hendrikto/backlight_control.git >>"$LOGFILE" 2>&1
+    # fi
 
     # cd backlight_control
     # log_message "Building and installing backlight_control..."
