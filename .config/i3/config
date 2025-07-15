@@ -245,3 +245,5 @@ bindsym XF86MonBrightnessUp exec backlight_control +20 && pkill -RTMIN+16 i3bloc
 bindsym $mod+Shift+w exec pcmanfm
 
 exec_always --no-startup-id ~/.local/bin/battery_alert.sh
+
+bindsym Mod1+space exec xterm -T fzf-nova -geometry 120x20+300+300 -fs 14 -e bash -c "source ~/.bashrc &>/dev/null && fzf-nova" 

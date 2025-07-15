@@ -16,8 +16,6 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-# Default editor
-export EDITOR='nvim'
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
