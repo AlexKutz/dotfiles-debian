@@ -243,3 +243,5 @@ bindsym XF86MonBrightnessDown exec backlight_control -20 && pkill -RTMIN+16 i3bl
 bindsym XF86MonBrightnessUp exec backlight_control +20 && pkill -RTMIN+16 i3blocks
 
 bindsym $mod+Shift+w exec pcmanfm
+
+exec_always --no-startup-id ~/.local/bin/battery_alert.sh

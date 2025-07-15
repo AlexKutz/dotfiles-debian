@@ -25,6 +25,7 @@ alias vim="nvim"
 
 # For bare dotfiles git repo
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias lsconfig='ls -la $(config ls-files)'
 
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
