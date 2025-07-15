@@ -53,6 +53,7 @@ main() {
     install_package acpi # for i3blocks battery widget
     install_package ranger
     install_package $SCRIPT_DIR/backlight-control_20250705-1_amd64.deb
+    install_package bat
 
     # Build tools
     # install_package build-essential

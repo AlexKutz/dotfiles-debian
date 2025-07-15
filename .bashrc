@@ -26,6 +26,8 @@ alias lla="ll -A"
 alias l.='ls -d .*'
 alias ll.='ll -d .*'
 
+alias cat='bat'
+
 # bash prompt
 PS1='\[\033[1;32m\][\u \w]\[\033[0m\]\$ '
 
