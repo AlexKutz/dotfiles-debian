@@ -28,6 +28,11 @@ alias ll.='ll -d .*'
 
 alias cat='bat'
 
+alias bathelp='bat --plain --language=help'
+help() {
+    "$@" --help 2>&1 | bathelp
+}
+
 # bash prompt
 PS1='\[\033[1;32m\][\u \w]\[\033[0m\]\$ '
 
@@ -39,9 +44,14 @@ alias vim="nvim"
 # fzf-nova на Alt+M
 bind -x '"\em": fzf-nova'
 
+
 # Git dotfiles
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias lsconfig='config ls-files -z | xargs -0 ls -la --color=auto --group-directories-first'
+
+alias wttr="curl 'wttr.in/Stara+Syniava?lang=uk&F'"
+alias wttrnow="curl 'wttr.in/Stara+Syniava?lang=uk&0pqF'"
+alias wttr2="curl v2.wttr.in/Stara+Syniava?lang=uk"
 
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth

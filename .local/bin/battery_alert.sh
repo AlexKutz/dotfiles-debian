@@ -14,7 +14,7 @@ while true; do
     if [ "$capacity" -lt 20 ] && [ "$status" = "Discharging" ]; then
         if [ ! -f "$LOCK" ]; then
 	volume_before=$(pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}')
-	pactl set-sink-volume @DEFAULT_SINK@ 40%
+	pactl set-sink-volume @DEFAULT_SINK@ 60%
             paplay $SOUND_FILE
             touch "$LOCK"
 	    pactl set-sink-volume @DEFAULT_SINK@ "$volume_before"

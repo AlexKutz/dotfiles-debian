@@ -58,7 +58,9 @@ bindsym $mod+Return exec kitty
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run
+# bindsym $mod+d exec --no-startup-id dmenu_run -l 10
+bindsym $mod+d exec --no-startup-id j4-dmenu-desktop --display-binary --term kitty
+# bindsym $mod+d exec --no-startup-id j4-dmenu-desktop
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -246,4 +248,8 @@ bindsym $mod+Shift+w exec pcmanfm
 
 exec_always --no-startup-id ~/.local/bin/battery_alert.sh
 
-bindsym Mod1+space exec xterm -T fzf-nova -geometry 120x20+300+300 -fs 14 -e bash -c "source ~/.bashrc &>/dev/null && fzf-nova" 
+# bindsym Mod1+space exec xterm -T fzf-nova -geometry 120x20+300+300 -fs 14 -e bash -c "source ~/.bashrc &>/dev/null && fzf-nova" 
+
+exec --no-startup-id xset s off
+exec --no-startup-id xset -dpms
+exec --no-startup-id xset s noblank

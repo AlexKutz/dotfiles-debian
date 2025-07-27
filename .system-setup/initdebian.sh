@@ -54,6 +54,11 @@ main() {
     install_package ranger
     install_package $SCRIPT_DIR/backlight-control_20250705-1_amd64.deb
     install_package bat
+    sudo apt-get install j4-dmenu-desktop
+    # For cht.sh shell mode
+    sudo apt install xsel rlwrap
+
+    install_package speedtest-cli
 
     # Build tools
     # install_package build-essential

@@ -13,27 +13,39 @@
 # or
 # bind-key Tab capture-pane \; save-buffer /tmp/tmux-buffer \; delete-buffer \; display-popup -w 80% -h 60% -E "/path/to/fzf-nova"
 
-# export FZF_DEFAULT_OPTS="-e -i -d '_' --with-nth 2.. --info=hidden --layout=reverse --scroll-off=5 --tiebreak=index --bind 'home:first,end:last,tab:down,shift-tab:up'"
-# mydir="${0%/*}"
-# selected="$(
-  # find "$mydir" -type f -name '_*' -exec basename {} \; \
-  # | sort | sed 's@\.@ @g' | column -t -s ',' \
-  # | fzf --prompt='fzf-nova: ' | cut -d ' ' -f1
-  # )"
-# [ -z "$selected" ] && exit
-# eval "${mydir}/${selected},*"
+#export FZF_DEFAULT_OPTS="-e -i -d '_' --with-nth 2.. --info=hidden --layout=reverse --scroll-off=5 --tiebreak=index --bind 'home:first,end:last,tab:down,shift-tab:up'"
+
+#mydir="$(dirname "$(readlink -f "$0")")"
+
+#selected="$(
+  #{
+    #find "$mydir" -type f -name '_notes*' -exec basename {} \;
+    #find "$mydir" -type f -name '_*' ! -name '_notes*' -exec basename {} \;
+  #} \
+  #| sed 's@\.@ @g' | column -t -s ',' \
+  #| exec fzf --prompt='fzf: ' | cut -d ' ' -f1
+#)"
+
+ #[ -z "$selected" ] && exit
+
+ #eval "${mydir}/${selected},*"
 
 
 export FZF_DEFAULT_OPTS="-e -i -d '_' --with-nth 2.. --info=hidden --layout=reverse --scroll-off=5 --tiebreak=index --bind 'home:first,end:last,tab:down,shift-tab:up'"
 
 mydir="$(dirname "$(readlink -f "$0")")"
 
-selected="$(
-  find "$mydir" -type f -name '_*' -exec basename {} \; \
-  | sort | sed 's@\.@ @g' | column -t -s ',' \
-  | fzf --prompt='fzf-nova: ' | cut -d ' ' -f1
-)"
+list=$(
+  {
+    find "$mydir" -type f -name '_notes*' -exec basename {} \;
+    find "$mydir" -type f -name '_*' ! -name '_notes*' -exec basename {} \;
+  } \
+  | sed 's@\.@ @g' | column -t -s ','
+)
+
+selected="$(echo "$list" | fzf --prompt='fzf: ' | cut -d ' ' -f1)" || exit 1
 
 [ -z "$selected" ] && exit
 
 eval "${mydir}/${selected},*"
+

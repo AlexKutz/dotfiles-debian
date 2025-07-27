@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Neovim
+# Exec=kitty -e nvim
+Exec=nvim
+Terminal=true
+Type=Application
+Categories=Utility;TextEditor;
