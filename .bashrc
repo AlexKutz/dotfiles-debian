@@ -15,6 +15,7 @@ case ":$PATH:" in
 esac
 export PATH
 
+# Make alias output colorful
 myalias() {
   if [ $# -eq 0 ]; then
     command alias | bat --language=sh --style=plain
@@ -166,3 +167,21 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# 1. Сортировка как в LC_COLLATE=C (точки сверху)
+export LC_COLLATE=C
+
+# 2. Говорим bash-completion сортировать директории первыми
+bind 'set completion-ignore-case on'   # игнорировать регистр
+bind 'set mark-directories on'         # добавлять / к директориям
+bind 'set show-all-if-ambiguous on'    # сразу показывать варианты
+bind 'set colored-completion-prefix on'
+
+
+# 3. Кастомная функция сортировки (dirs first, скрытые dirs первыми, затем скрытые файлы)
+_complete_ls() {
+    local IFS=$'\n'
+    COMPREPLY=( $(compgen -f -- "$2" | LC_COLLATE=C sort -t/ -k1,1) )
+}
+complete -F _complete_ls ls
+
