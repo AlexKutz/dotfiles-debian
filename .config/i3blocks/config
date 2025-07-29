@@ -42,7 +42,7 @@ markup=none
 
 [speedtest]
 command=$HOME/.config/i3blocks/speedtest/speedtest
-interval=300
+interval=600
 
 [public-ip]
 command=wget -qO - icanhazip.com

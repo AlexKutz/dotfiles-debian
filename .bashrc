@@ -15,18 +15,29 @@ case ":$PATH:" in
 esac
 export PATH
 
+myalias() {
+  if [ $# -eq 0 ]; then
+    command alias | bat --language=sh --style=plain
+  else
+    command alias "$@"
+  fi
+}
+
+alias alias='myalias'
+
 # Default editor
 export EDITOR='nvim'
 
 # ls aliaces
-alias ls='ls --color=auto -Fh --group-directories-first'
-alias la="ls -A"
-alias ll="ls -l"
-alias lla="ll -A"
-alias l.='ls -d .*'
-alias ll.='ll -d .*'
+alias lsg='(ls -Fhl --color=auto --group-directories-first -d .[^.]*; ls -Fhl --color=auto --group-directories-first)'
 
-alias cat='bat'
+alias ls='LC_COLLATE=C ls -Fh --color=auto --group-directories-first'
+alias ll='ls -l'
+alias lla="ll -a"
+alias lsa="ll -a"
+alias ls.='ll -d .*'
+
+# alias cat='bat'
 
 alias bathelp='bat --plain --language=help'
 help() {
@@ -119,7 +130,7 @@ esac
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
+    # alias ls='ls --color=auto'
     alias dir='dir --color=auto'
     # alias vdir='vdir --color=auto'
 
