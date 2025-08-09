@@ -158,7 +158,8 @@ mytui() {
     edit)
       if [ "$TERM_PROGRAM" = tmux ]; then
         selected="$(find "$mydir"/ -type f | sort | fzf -m -d / --with-nth -2.. \
-	  --bind "shift-delete:execute:rm -f {} >/dev/tty" \
+	--bind "alt-d:execute(rm -f {})+reload(find . -type f)"
+#	  --bind "alt-d:execute:rm -f {} >/dev/tty" \
           --bind "ctrl-v:execute:imv {} >/dev/tty" \
           --bind "ctrl-r:reload:cd $mydir && find "$mydir"/ -type f | sort" \
           --header 'C-v:rename C-r:reload S-del:trash C-n/p:down/up C-j/k:preview-pagedown/up' \
@@ -171,6 +172,9 @@ mytui() {
         done
       else
         selected="$(find "$mydir"/ -type f | sort | fzf -d / --with-nth -2.. \
+#	--bind "alt-d:execute:rm -f {} >/dev/tty" \
+	--bind "alt-d:execute(rm -f {})+reload(find . -type f)"
+	--header $'Enter:edit  Alt+D:delete  Esc:quit  ↑↓:navigate  Ctrl-J/K:preview down/up\n' \
           --preview 'bat --color=always -pp {}' \
           --prompt="notekami >>> edit: ")"
         [ -z "$selected" ] && exit

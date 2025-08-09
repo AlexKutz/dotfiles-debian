@@ -5,6 +5,3 @@ echo "alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $H
 rm ~/.bashrc
 
 config checkout
-
-config config --local status.showUntrackedFiles no
-
