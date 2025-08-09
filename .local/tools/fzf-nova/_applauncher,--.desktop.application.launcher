@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Собираем .desktop-файлы из стандартных путей
+desktop_file() {
+    find /usr/share/applications -name "*.desktop" 2>/dev/null
+    find /usr/local/share/applications -name "*.desktop" 2>/dev/null
+    find "$HOME/.local/share/applications" -name "*.desktop" 2>/dev/null
+}
+
+export FZF_DEFAULT_OPTS="-e -i --info=hidden --layout=reverse --scroll-off=5 --tiebreak=index --bind 'home:first,end:last'"
+
+selected="$(desktop_file | awk -F/ '{print $0 "\t" $NF}' | fzf -m --with-nth=2 --delimiter='\t' --prompt='Select program(s) to open: ' | cut -f1)"
+
+[ -z "$selected" ] && exit 0
+
+echo "$selected" | while read -r file; do
+    setsid gtk-launch "$(basename "$file" .desktop)" >/dev/null 2>&1 &
+    sleep 0.2
+done
+
