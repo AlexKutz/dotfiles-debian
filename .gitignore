@@ -1,2 +1,14 @@
-*
+# Игнорируем всё в корне
+/*
+
+# Не игнорируем .gitignore
+!.gitignore
+
+# Не игнорируем папку .config целиком (чтобы Git смотрел внутрь)
 !.config/
+
+# Игнорируем всё внутри .config, кроме notekami
+.config/*
+!.config/notekami/
+!.config/notekami/**
+
