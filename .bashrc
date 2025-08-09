@@ -29,9 +29,6 @@ alias alias='myalias'
 # Default editor
 export EDITOR='nvim'
 
-# ls aliaces
-alias lsg='(ls -Fhl --color=auto --group-directories-first -d .[^.]*; ls -Fhl --color=auto --group-directories-first)'
-
 alias ls='LC_COLLATE=C ls -Fh --color=auto --group-directories-first'
 alias ll='ls -l'
 alias lla="ll -a"
@@ -58,7 +55,6 @@ alias vim="nvim"
 
 # fzf-nova на Alt+M
 bind -x '"\em": fzf-nova'
-
 
 # Git dotfiles
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
