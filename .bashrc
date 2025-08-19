@@ -29,6 +29,29 @@ alias alias='myalias'
 # Default editor
 export EDITOR='nvim'
 
+lsx() {
+  if [ "$#" -eq 0 ]; then
+    set -- .
+  fi
+
+  for dir in "$@"; do
+    if [ ! -d "$dir" ]; then
+      echo "lsx: '$dir' is not a directory" >&2
+      continue
+    fi
+
+    echo "Directory: $dir"
+    (
+      cd "$dir" || return
+
+      (ls -Ad --color=auto .[^.]* 2>/dev/null | sort | xargs -r -d '\n' ls -ld --color=auto --group-directories-first) 2>/dev/null
+      (ls -Ad --color=auto [!.]* 2>/dev/null | sort | xargs -r -d '\n' ls -ld --color=auto --group-directories-first) 2>/dev/null
+    )
+  done
+}
+
+
+
 alias ls='LC_COLLATE=C ls -Fh --color=auto --group-directories-first'
 alias ll='ls -l'
 alias lla="ll -a"
@@ -63,6 +86,8 @@ alias lsconfig='config ls-files -z | xargs -0 ls -la --color=auto --group-direct
 alias wttr="curl 'wttr.in/Stara+Syniava?lang=uk&F'"
 alias wttrnow="curl 'wttr.in/Stara+Syniava?lang=uk&0pqF'"
 alias wttr2="curl v2.wttr.in/Stara+Syniava?lang=uk"
+
+alias clear="echo -e '\033c' > /dev/tty"
 
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth

@@ -100,7 +100,6 @@ myfile="$mydir/scratchpaper/$(date +%Y-%m).txt"
 timestamp="$(date +%Y-%m-%d\ %r)"
 [ ! -d "$mydir" ] && mkdir -p "$mydir"
 
-
 mytui() {
   selected="$( mylist | column -s '|' -t | fzf --header 'Esc:quit C-n/p:down/up Enter:select' \
     --prompt="notes: " | cut -d ' ' -f1)"
@@ -171,7 +170,8 @@ mytui() {
       done
     else
       selected="$(find "$mydir"/ -type f | sort | fzf -d / --with-nth -2.. \
-        --bind "alt-d:execute(rm -f {})+reload(find . -type f)" \
+        --bind "alt-d:execute(rm -f {})" \
+        --bind "ctrl-r:reload:cd $mydir && find "$mydir"/ -type f | sort" \
         --header $'Enter:edit  Alt+D:delete  Esc:quit  ↑↓:navigate  Ctrl-J/K:preview down/up\n' \
         --preview 'bat --color=always -pp {}' \
         --prompt="notekami >>> edit: ")"
@@ -208,6 +208,113 @@ mytui() {
   esac
 }
 
+# mytui() {
+#   selected="$( mylist | column -s '|' -t | fzf --header 'Esc:quit C-n/p:down/up Enter:select' \
+#     --prompt="notes: " | cut -d ' ' -f1)"
+#   [ -z "$selected" ] && exit
+#   case $selected in
+#     scratch)
+#       mkdir -p "$(dirname "$myfile")"
+#       [ -z "$(tail -n 1 "$myfile")" ] || printf "\n" >> "$myfile"
+#       printf "%s\n\n" "#### $timestamp" >> "$myfile"
+#       "${EDITOR:-nano}" +999999 "$myfile"
+#       ;;
+#     search)
+#       selected=$(grep -rnv '^[[:space:]]*$' "$mydir"/* 2>/dev/null \
+#         | fzf -d / --with-nth 6.. --prompt="notekami >>> search: ")
+#       [ -z "$selected" ] && exit
+#       file_name=$(echo "$selected" | cut -d ':' -f1)
+#       file_num=$(echo "$selected" | cut -d ':' -f2)
+#       if [[ "$TERM_PROGRAM" = tmux ]]; then
+#         tmux new-window -n "search-notes" "${EDITOR:-nano} +$file_num $file_name"
+#       else
+#         "${EDITOR:-nano}" +"$file_num" "$file_name"
+#       fi
+#       ;;
+#     create)
+#       selected=$(echo | fzf --print-query \
+#         --prompt="notekami ($selected) >>> enter new name (no spaces): " \
+#         --header 'type in foo.md or newdir/subdir/bar.md; C-j/k:preview-pagedown/up' \
+#         --preview-window 'down' --preview "find $mydir/ -type d | cut -d '/' -f6- | sed -e '/^[[:blank:]]*$/d' | sort"
+#       )
+#       [ -z "$selected" ] && exit
+#       mkdir -p "$(dirname "$mydir/$selected")"
+#       if [ "$TERM_PROGRAM" = tmux ]; then
+#         tmux new-window -n "create-cheatsheet" "${EDITOR:-nano} $mydir/$selected"
+#       else
+#         "${EDITOR:-nano}" "$mydir"/"$selected"
+#       fi
+#       ;;
+#     copy)
+#       selected="$(find "$mydir"/ -type f | sort | fzf -d / --with-nth -2.. \
+#         --preview 'bat --color=always -pp {}' \
+#         --prompt="notekami ($selected) >>> copy to clipboard: ")"
+#       [ -z "$selected" ] && exit
+#       # copy file to clipboard
+#       printf %s "$(cat -- "$selected")" | xsel -b 2>/dev/null || printf %s "$(cat -- "$selected")" | xclip -selection clipboard -r 2>/dev/null
+#       printf %s "$(cat -- "$selected")" | wl-copy 2>/dev/null
+#       printf %s "$(cat -- "$selected")" | clip 2>/dev/null
+#       (printf %s "$(cat -- "$selected")" > /dev/clipboard) 2>/dev/null
+#       printf %s "$(cat -- "$selected")" | pbcopy 2>/dev/null
+#       printf %s "$(cat -- "$selected")" | termux-clipboard-set 2>/dev/null
+#       (printf %s "$(cat -- "$selected")" | tmux load-buffer -) 2>/dev/null
+#       ;;
+#     info)
+#       myinfo | less -C
+#       ;;
+#     edit)
+#       if [ "$TERM_PROGRAM" = tmux ]; then
+#         selected="$(find "$mydir"/ -type f | sort | fzf -m -d / --with-nth -2.. \
+#           --bind "alt-d:execute(rm -f {})+reload(find . -type f)" \
+#           --bind "ctrl-v:execute:imv {} >/dev/tty" \
+#           --bind "ctrl-r:reload:cd $mydir && find "$mydir"/ -type f | sort" \
+#           --header 'C-v:rename C-r:reload S-del:trash C-n/p:down/up C-j/k:preview-pagedown/up' \
+#           --preview 'bat --color=always -pp {}' \
+#           --prompt="notekami >>> edit(s): ")"
+#         [ -z "$selected" ] && exit
+#         echo "$selected" | while read -r line; do
+#         filename="$(basename "$line")"
+#         tmux new-window -n "${filename}-pill" "${EDITOR:-nano} $line"
+#       done
+#     else
+#       selected="$(find "$mydir"/ -type f | sort | fzf -d / --with-nth -2.. \
+#         --bind "alt-d:execute(rm -f {})" \
+#         --bind "ctrl-r:reload:cd $mydir && find "$mydir"/ -type f | sort" \
+#         --header $'Enter:edit  Alt+D:delete  Esc:quit  ↑↓:navigate  Ctrl-J/K:preview down/up\n' \
+#         --preview 'bat --color=always -pp {}' \
+#         --prompt="notekami >>> edit: ")"
+#       [ -z "$selected" ] && exit
+#       "${EDITOR:-nano}" "$selected"
+#       fi
+#       ;;
+#     snippet)
+#       selected=$(grep -nrH '^####; ' "$mycheatdir"/* | fzf -d ' ' --with-nth 2.. \
+#         --prompt="snippet ($selected) >>> copy to clipboard: " \
+#         --bind 'ctrl-f:execute:${EDITOR:-nano} $(echo {} | cut -d: -f1) >/dev/tty' \
+#         --bind 'ctrl-o:execute:${EDITOR:-nano} +$(echo {} | cut -d: -f2) $(echo {} | cut -d: -f1) >/dev/tty' \
+#         --bind "ctrl-r:reload:grep -nrH '^####; ' "$mycheatdir"/* " \
+#         --bind 'home:first,end:last,tab:down,shift-tab:up' \
+#         --header 'C-o:edit-line C-r:reload C-n/p:down/up C-j/k:preview-pagedown/up' \
+#         --preview-window 'down' \
+#         --preview 'awk '/'"$(echo {} | cut -d " " -f2-)"\\n'/' RS="\n\n\n" "$(echo {} | cut -d: -f1)" | \
+#         bat --color=always -pp -l "$(echo {} | cut -d: -f1 | rev | cut -d. -f1 | rev)"'
+#       )
+#       [ -z "$selected" ] && exit
+#       file_name="$(echo "$selected" | cut -d: -f1)"
+#       snippet_title="$(echo "$selected" | cut -d " " -f2-)"
+#       selected=$(awk '/'"$snippet_title"'/' RS="\n\n\n" "$file_name" | sed -e '/^####;/d' -e '/^###;/d' -e '/^##;/d' )
+#       ## copy to clipboard
+#       ## X11=xsel/xclip; wayland=wl-copy; winos(vista+)=clip; cygwin=/dev/clipboard; macos=pbcopy; android=termux
+#       printf %s "$selected" | xsel -b 2>/dev/null || printf %s "$selected" | xclip -selection clipboard -r 2>/dev/null
+#       printf %s "$selected" | wl-copy 2>/dev/null
+#       printf %s "$selected" | clip 2>/dev/null
+#       (printf %s "$selected" > /dev/clipboard) 2>/dev/null
+#       printf %s "$selected" | pbcopy 2>/dev/null
+#       printf %s "$selected" | termux-clipboard-set 2>/dev/null
+#       (printf %s "$selected" | tmux load-buffer -) 2>/dev/null
+#       ;;
+#   esac
+# }
 
 helpmsg() {
   cat <<EOF
