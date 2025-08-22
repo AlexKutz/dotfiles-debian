@@ -12,3 +12,5 @@ acpi
 nmap
 ranger
 netcat
+arp-scan
+netdiscover

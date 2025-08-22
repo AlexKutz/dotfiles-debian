@@ -11,4 +11,5 @@
 .config/*
 !.config/notekami/
 !.config/notekami/**
+!.config/nvim
 
